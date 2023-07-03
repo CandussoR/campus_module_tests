@@ -46,3 +46,7 @@
 # Mock
 - Créer et injecter des données de tests.
 - Dependency Injection.
+
+# TDD
+* Création des tests d'abord,
+* Permet de penser à l'avance aux cas d'utilisation d'une fonction.
