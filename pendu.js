@@ -8,6 +8,10 @@ export async function getWord() {
     }
 }
 
+export function sanitizeWord(word) {
+    return word.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+}
+
 export async function selectDifficulty() {
     const response = await prompts({
         type: 'select',
@@ -123,12 +127,12 @@ async function main() {
         }
 
         if (!guessedWord.includes('-')) {
-            return console.log(getWinningMessage(difficulty))
+            return getWinningMessage(difficulty)
         }
 
     }
 
-    console.log(getLosingMessage(difficulty))
+    getLosingMessage(difficulty)
 }
 
 main();

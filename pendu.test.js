@@ -1,5 +1,5 @@
 import { expect, test, expectTypeOf } from 'vitest'
-import {getLives, getWord, isOneLetter, isLetterInWord, wordDiscoveredInit, updateDiscoveredWord, getWinningMessage, getLosingMessage} from './pendu.js'
+import {getLives, getWord, sanitizeWord, isOneLetter, isLetterInWord, wordDiscoveredInit, updateDiscoveredWord, getWinningMessage, getLosingMessage} from './pendu.js'
 
 test('getWord', async () => {
     expectTypeOf(await getWord()).toEqualTypeOf("string")
@@ -34,4 +34,8 @@ test('getWinningMessage', () => {
 
 test('getLosingMessage', () => {
     expect(getLosingMessage("hard")).toBe("Tu t'es bien battu. Bon, ça a servi à rien puisque t'es mort, mais quand même.")
+})
+
+test('sanitizeWord', () => {
+    expect(sanitizeWord("ébène")).toBe("ebene")
 })
