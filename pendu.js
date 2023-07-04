@@ -13,7 +13,6 @@ export async function guessLetter() {
 
 export function isLetterInWord(letter, word) {
     return word.includes(letter);
-
 }
 
 export function isLetter(character) {
@@ -39,12 +38,12 @@ export function updateDiscoveredWord(word, letter, discoveredWord) {
 
 async function main() {
     const word = "anticonstitutionnellement"
-    const guessed_word = wordDiscoveredInit(word)
-    const lives = 6
+    let guessedWord = wordDiscoveredInit(word)
+    let lives = 6
 
     while (lives != 0) {
 
-        console.log(guessed_word)
+        console.log(guessedWord)
 
         let letter = await guessLetter()
 
@@ -52,15 +51,15 @@ async function main() {
             throw ValueError("Type a letter.")
         }
 
-        if (isLetterInWord()) {
-            updateDiscoveredWord(word, letter, guessed_word)
+        if (isLetterInWord(letter, word)) {
+            guessedWord = updateDiscoveredWord(word, letter, guessedWord)
         } else {
             lives = lives - 1
             console.log(`Nah ! ${lives} lives left.`)
         }
 
-        if (!guessed_word.contains('-')) {
-            console.log("Yeah, you won you fucking cheater you happy now huh YOU HAPPY NOW ?!")
+        if (!guessedWord.includes('-')) {
+            return console.log("Yeah, you won you fucking cheater you happy now huh YOU HAPPY NOW ?!")
         }
 
     }
