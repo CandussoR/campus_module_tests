@@ -25,15 +25,24 @@ test('updateDiscoveredWord', () => {
 })
 
 test('selectDifficulty', () => {
+    expect(getLives("facile")).toBe(9)
     expect(getLives("normal")).toBe(6)
+    expect(getLives("difficile")).toBe(4)
+    expect(getLives("impossible")).toBe(2)
 })
 
 test('getWinningMessage', () => {
     expect(getWinningMessage("facile")).toBe("Les doigts dans le nez! Essaie plus dur la prochaine fois.")
+    expect(getWinningMessage("normal")).toBe("Bien ouej ! T'as pas eu un peu trop de vies là ? Passe en difficile non ?")
+    expect(getWinningMessage("difficile")).toBe("Il Maestro ! C'était pas gagné d'avance.")
+    expect(getWinningMessage("impossible")).toBe("Il nE sAvaIt pAs qUe c'EtAit iMpoSsiBle aLoRs iL l'A faIt")
 })
 
 test('getLosingMessage', () => {
-    expect(getLosingMessage("hard")).toBe("Tu t'es bien battu. Bon, ça a servi à rien puisque t'es mort, mais quand même.")
+    expect(getLosingMessage("difficile")).toBe("Tu t'es bien battu. Bon, ça a servi à rien puisque t'es mort, mais quand même.")
+    expect(getLosingMessage("facile")).toBe("Arrête la drogue gros !")
+    expect(getLosingMessage("normal")).toBe("Eh ben alors, un petit coup de mou?")
+    expect(getLosingMessage("impossible")).toBe("Sans surprise ! Va faire un tour, non ?")
 })
 
 test('sanitizeWord', () => {

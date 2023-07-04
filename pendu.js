@@ -2,25 +2,24 @@ import prompts from "prompts";
 
 export async function getWord() {
     let response = await fetch("https://trouve-mot.fr/api/random")
-    if (response) {
-        response = await response.json()
-        return response[0].name
-    }
+    response = await response.json()
+    return sanitizeWord(response[0].name)
 }
 
 export function sanitizeWord(word) {
     return word.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
 }
 
+/* istanbul ignore next */
 export async function selectDifficulty() {
     const response = await prompts({
         type: 'select',
         name: 'value',
         message: 'Sélectionnez une difficulté',
         choices: [
-          { title: 'facile', value: 'easy' },
+          { title: 'facile', value: 'facile' },
           { title: 'normal', value: 'normal'},
-          { title: 'difficile', value: 'hard' },
+          { title: 'difficile', value: 'difficile' },
           { title: 'impossible', value: 'impossible'}
         ],
         initial: 1
@@ -43,6 +42,7 @@ export function getLives(difficulty) {
     }
 }
 
+/* istanbul ignore next */
 export async function guessLetter() {
     const response = await prompts({
         type: "text",
@@ -50,7 +50,7 @@ export async function guessLetter() {
         message: 'Try a letter.'
     })
     if (response.letter) {
-        return response.letter.toLowerCase();
+        return response.letter;
     }
 }
 
@@ -60,7 +60,7 @@ export function getWinningMessage(difficulty) {
             return "Les doigts dans le nez! Essaie plus dur la prochaine fois."
         case "normal":
             return "Bien ouej ! T'as pas eu un peu trop de vies là ? Passe en difficile non ?"
-        case "hard":
+        case "difficile":
             return "Il Maestro ! C'était pas gagné d'avance."
         case "impossible":
             return "Il nE sAvaIt pAs qUe c'EtAit iMpoSsiBle aLoRs iL l'A faIt"
@@ -73,12 +73,13 @@ export function getLosingMessage(difficulty) {
             return "Arrête la drogue gros !"
         case "normal":
             return "Eh ben alors, un petit coup de mou?"
-        case "hard":
+        case "difficile":
             return "Tu t'es bien battu. Bon, ça a servi à rien puisque t'es mort, mais quand même."
         case "impossible":
             return "Sans surprise ! Va faire un tour, non ?"
     }
 }
+
 export function isLetterInWord(letter, word) {
     return word.includes(letter);
 }
@@ -103,6 +104,7 @@ export function updateDiscoveredWord(word, letter, discoveredWord) {
     return discoveredWord
 }
 
+/* istanbul ignore next */
 async function main() {
     const word = await getWord()
     const difficulty = await selectDifficulty()
@@ -116,7 +118,7 @@ async function main() {
         let letter = await guessLetter()
 
         if (!isOneLetter(letter)) {
-            throw ValueError("Type a letter.")
+            console.log("Entrez une lettre.")
         }
 
         if (isLetterInWord(letter, word)) {
@@ -127,12 +129,14 @@ async function main() {
         }
 
         if (!guessedWord.includes('-')) {
-            return getWinningMessage(difficulty)
+            console.log(guessedWord)
+            return console.log(getWinningMessage(difficulty))
         }
 
     }
 
-    getLosingMessage(difficulty)
+    console.log(getLosingMessage(difficulty))
+    console.log(`Le mot était "${word}".`)
 }
 
 main();
