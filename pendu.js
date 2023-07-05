@@ -42,7 +42,7 @@ export function getLives(difficulty) {
     }
 }
 
-// /* istanbul ignore next */
+/* istanbul ignore next */
 export async function guessLetter() {
     const response = await prompts({
         type: "text",
