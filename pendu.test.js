@@ -1,8 +1,10 @@
 import { expect, test, expectTypeOf } from 'vitest'
-import {getLives, getWord, sanitizeWord, isOneLetter, isLetterInWord, wordDiscoveredInit, updateDiscoveredWord, getWinningMessage, getLosingMessage} from './pendu.js'
+import {getLives, getWordAndHint, sanitizeWord, isOneLetter, isLetterInWord, wordDiscoveredInit, updateDiscoveredWord, getWinningMessage, getLosingMessage} from './pendu.js'
 
-test('getWord', async () => {
-    expectTypeOf(await getWord()).toEqualTypeOf("string")
+test('getWordAndHint', async () => {
+    let wordAndHint = await getWordAndHint()
+    expectTypeOf(wordAndHint).toEqualTypeOf("list")
+    expect(wordAndHint.length).toBe(2)
 })
 
 test('isLetterInWord', () => {
