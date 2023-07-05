@@ -1,0 +1,10 @@
+name: automatic-testing
+run-name: Lancement automatique des tests à chaque push
+on: [push]
+jobs:
+  launch-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with: 
