@@ -24,7 +24,7 @@ test('updateDiscoveredWord', () => {
     expect(updateDiscoveredWord("bonjour", "o", "-------")).toBe("-o--o--")
 })
 
-test('selectDifficulty', () => {
+test('getLives', () => {
     expect(getLives("facile")).toBe(9)
     expect(getLives("normal")).toBe(6)
     expect(getLives("difficile")).toBe(4)

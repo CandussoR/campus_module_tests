@@ -42,7 +42,7 @@ export function getLives(difficulty) {
     }
 }
 
-/* istanbul ignore next */
+// /* istanbul ignore next */
 export async function guessLetter() {
     const response = await prompts({
         type: "text",
@@ -99,6 +99,7 @@ export function updateDiscoveredWord(word, letter, discoveredWord) {
     for (i; i < word.length; i++) {
         if (word[i] == letter) { a.push(i) }
     }
+
     a.forEach(index => discoveredWord = discoveredWord.substring(0,index) + letter + discoveredWord.substring(index+1))
 
     return discoveredWord
@@ -110,6 +111,7 @@ async function main() {
     const difficulty = await selectDifficulty()
     let guessedWord = wordDiscoveredInit(word)
     let lives = getLives(difficulty)
+    let lettersTried = []
 
     while (lives != 0) {
 
@@ -117,15 +119,26 @@ async function main() {
 
         let letter = await guessLetter()
 
-        if (!isOneLetter(letter)) {
-            console.log("Entrez une lettre.")
-        }
+        if (isOneLetter(letter) && (!lettersTried.includes(letter))) {
 
-        if (isLetterInWord(letter, word)) {
-            guessedWord = updateDiscoveredWord(word, letter, guessedWord)
+            lettersTried.push(letter)
+
+            if (isLetterInWord(letter, word)) {
+                guessedWord = updateDiscoveredWord(word, letter, guessedWord)
+            } else {
+                lives = lives - 1
+                console.log(`Nah ! ${lives} vies restantes.`)
+            }
+            
+        } else if (lettersTried.includes(letter)) {
+            
+            console.log(`Vous avez déjà tenté cette lettre.
+            Pour rappel, les lettres déjà tentées sont : ${lettersTried}`)               
+            
         } else {
-            lives = lives - 1
-            console.log(`Nah ! ${lives} vies restantes.`)
+            
+            console.log("Entrez une lettre valide.")
+            
         }
 
         if (!guessedWord.includes('-')) {
