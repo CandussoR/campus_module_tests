@@ -1,9 +1,9 @@
 import prompts from "prompts";
 
-export async function getWord() {
+export async function getWordAndHint() {
     let response = await fetch("https://trouve-mot.fr/api/random")
     response = await response.json()
-    return sanitizeWord(response[0].name)
+    return [sanitizeWord(response[0].name), response[0].categorie.toLowerCase()]
 }
 
 export function sanitizeWord(word) {
@@ -107,7 +107,7 @@ export function updateDiscoveredWord(word, letter, discoveredWord) {
 
 /* istanbul ignore next */
 async function main() {
-    const word = await getWord()
+    let [word, hint] = await getWordAndHint()
     const difficulty = await selectDifficulty()
     let guessedWord = wordDiscoveredInit(word)
     let lives = getLives(difficulty)
@@ -132,12 +132,15 @@ async function main() {
             
         } else if (lettersTried.includes(letter)) {
             
-            console.log(`Vous avez déjà tenté cette lettre.
-            Pour rappel, les lettres déjà tentées sont : ${lettersTried}`)               
+            console.log(`Vous avez déjà tenté cette lettre.\nPour rappel, les lettres déjà tentées sont : ${lettersTried}`)               
             
         } else {
             
-            console.log("Entrez une lettre valide.")
+            if (letter == "indice") {
+                console.log(`Thème(s) : ${hint}`)
+            } else {
+                console.log("Entrez une lettre valide.")
+            }
             
         }
 
